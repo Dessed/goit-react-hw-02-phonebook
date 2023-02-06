@@ -1,5 +1,9 @@
 import styled from 'styled-components';
 
+export const InputField = styled.form`
+    width: 1000px;
+    border: black solid 2px;
+`;
 export const Label = styled.label`
     display: flex;
     flex-direction: column;
@@ -7,11 +11,6 @@ export const Label = styled.label`
 
 export const Name = styled.span`
     font-size: 40px;
-`;
-
-export const InputField = styled.form`
-    width: 1000px;
-    border: black solid 2px;
 `;
 
 export const Input = styled.input`

@@ -1,67 +1,57 @@
 import { Component } from 'react';
-import { nanoid } from 'nanoid'
-import {  InputField, Label, Name,  Input, User } from './App.styled';
+import { ContactForm } from 'components/ContactForm/ContactForm';
+import { nanoid } from 'nanoid';
+import { Filter } from 'components/Filter/Filter';
+import { ContactList } from '../ContactList/ContactList';
 
 
 export class App extends Component {
   state = {
-    contacts: [],
-    name: ''
+    contacts: [
+      {id: 'id-1', name: 'Rosie Simpson', number: '459-12-56'},
+      {id: 'id-2', name: 'Hermione Kline', number: '443-89-12'},
+      {id: 'id-3', name: 'Eden Clements', number: '645-17-79'},
+      {id: 'id-4', name: 'Annie Copeland', number: '227-91-26'},
+    ],
+    filter: '',
+  };
+ 
+  handleFormOnSubmit = data => {
+    console.log(data);
+    const { contacts} = this.state;
+    const { name, number } = data;
+    const id = nanoid(3);
+    const alertReplayNameUser = contacts.some((el) => (el.name === name));
+    // const alertReplayNameUser = contacts.map(contact => contact.name).includes(name);
+    
+    alertReplayNameUser === true ? alert (`${name} is already in contacts.`) : 
+    this.setState({state: contacts.push({id: id, name: name, number: number})});
   };
 
   handleChange = e => {
-    this.setState({ name: e.target.value });
-  };
-
-  handleSubmit = e => {
-    e.preventDefault();
-    const { contacts, name } = this.state;
-    this.setState({ state: contacts.push([name])});
-  };
- 
-  AddContactPhoneBook = () => {
-    return (
-        this.state.contacts.map(contact => (<User key={nanoid(3)}>{contact}</User>))
-    );
+    const {name, value} = e.currentTarget;
+    this.setState({ [name]: value });
   };
 
   render () {
-    const AddContactPhoneBook = this.AddContactPhoneBook();
+    const handleFormOnSubmit = this.handleFormOnSubmit;
+    const handleChange = this.handleChange;
+    
     return (
       <section>
         <h1>Phonebook</h1>
-          
-        <InputField> 
-          <Label>
-            <Name>Name</Name>
-
-            <Input
-              type="text"
-              name="name"
-              onChange={this.handleChange}
-              pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-              title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, 
-              Charles de Batz de Castelmore d'Artagnan"
-              required/>
-
-            <button type='submit' name='Contact' onClick={this.handleSubmit}>Add contact</button>
-          </Label>
-        </InputField> 
-          
+        <ContactForm onFormSubmit={handleFormOnSubmit}/>
         <div>
           <h2>Contacts</h2>
+          <Filter filter={this.state.filter} onChange={handleChange}/>
           <ul>
-            
-            {AddContactPhoneBook}
+            <ContactList  contactsData={this.state}/>
           </ul>
-        </div>
-  
-          
+        </div>          
       </section>
          )
-    }
-}
+    };
+};
     
    
-
 

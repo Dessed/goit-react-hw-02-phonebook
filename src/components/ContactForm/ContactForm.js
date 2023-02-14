@@ -1,5 +1,6 @@
 import { Component } from "react";
-import { InputField, Label, Name,  Input } from '../App/App.styled';
+import PropTypes from 'prop-types';
+import { InputField, Label, Name,  Input, Button  } from '../App/App.styled';
 
 
 export class ContactForm extends Component {
@@ -10,7 +11,7 @@ export class ContactForm extends Component {
 
     handleChange = e => {
         const {name, value} = e.currentTarget;
-        this.setState({ [name]: value });
+        this.setState({[name]: value });
       };
 
     handleSubmit = e => {
@@ -29,6 +30,7 @@ export class ContactForm extends Component {
     render () {
         const handleChange = this.handleChange;
         const handleSubmit = this.handleSubmit;
+        const { name, number } = this.state;
        
         return (
             <InputField onSubmit={handleSubmit}> 
@@ -37,7 +39,7 @@ export class ContactForm extends Component {
                   <Input
                     type="text"
                     name="name"
-                    value={this.state.name}
+                    value={name}
                     onChange={handleChange}
                     pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
                     title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, 
@@ -48,15 +50,21 @@ export class ContactForm extends Component {
                   <Input
                     type="tel"
                     name="number"
-                    value={this.state.number}
+                    value={number}
                     onChange={handleChange}
                     pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
                     title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
                     required
                   />
-                  <button type='submit' name='Contact'>Add contact</button>
+                  <Button type='submit' name='Contact'>Add contact</Button>
                 </Label>
             </InputField> 
         );
     };
+};
+
+
+ContactForm.propTypes = {
+  name: PropTypes.string.isRequired,
+  number: PropTypes.number.isRequired,
 };

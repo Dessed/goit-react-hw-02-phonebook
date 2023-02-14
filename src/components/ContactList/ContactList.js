@@ -1,12 +1,25 @@
-import { User } from '../App/App.styled';
+import { User, Button } from '../App/App.styled';
+import PropTypes from 'prop-types';
 
-export const ContactList = ({contactsData}) => {
+export const ContactList = ({contactsData, onDelete}) => {
     const {contacts, filter} = contactsData;
     const normalizedFilter = filter.toLowerCase();
-    
+ 
     return (
         contacts.filter(contact => contact.name.toLocaleLowerCase().includes(normalizedFilter))
-        .map(contact => (<User key={contact.id}>{contact.name}: {contact.number}</User>))
+        .map(({ name, number, id }) => 
+        (<User key={id}>
+        {name}: {number}
+        <Button type='Button' onClick={() => onDelete(id)}>Delete</Button>
+        </User>))
     );
 };
-   
+
+
+ContactList.propTypes = {
+    filter: PropTypes.string.isRequired,
+    contacts: PropTypes.shape ({
+        name: PropTypes.string.isRequired,
+        number: PropTypes.number.isRequired,
+    })
+};
